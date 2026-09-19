@@ -93,7 +93,7 @@ From the project root, use the launcher for your operating system:
 - macOS: double-click `run-harlow.command`. If macOS blocks it, right-click and choose **Open**.
 - Windows: double-click `run-harlow.bat`.
 
-Each launcher opens separate terminal windows for the backend and frontend. Stop each process with `Ctrl+C` in its terminal window.
+Each launcher opens separate terminal windows for the backend and frontend. The Linux launcher loads common `~/.profile`, `~/.bashrc`, SDKMAN, and NVM environments so GUI launches can find Java and npm as well as VS Code terminals. Stop each process with `Ctrl+C` in its terminal window.
 
 ## Verify the Backend
 

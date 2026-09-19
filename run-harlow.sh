@@ -7,7 +7,23 @@ launch_terminal() {
   local title="$1"
   local working_dir="$2"
   local command="$3"
-  local terminal_command="cd \"$ROOT_DIR/$working_dir\" && $command; status=\$?; echo; echo \"Process stopped with exit code \$status. Press Enter to close.\"; read -r"
+  local environment_setup=''
+  local requirement_check=''
+
+  environment_setup=''
+  [ -r "$HOME/.profile" ] && environment_setup+='source "$HOME/.profile" 2>/dev/null || true; '
+  [ -r "$HOME/.bashrc" ] && environment_setup+='source "$HOME/.bashrc" 2>/dev/null || true; '
+  environment_setup+='if [ -r "$HOME/.sdkman/bin/sdkman-init.sh" ]; then source "$HOME/.sdkman/bin/sdkman-init.sh"; fi; '
+  environment_setup+='if [ -r "$HOME/.nvm/nvm.sh" ]; then source "$HOME/.nvm/nvm.sh"; fi; '
+  environment_setup+='if [ -x "$HOME/.sdkman/candidates/java/current/bin/java" ]; then export JAVA_HOME="$HOME/.sdkman/candidates/java/current"; export PATH="$JAVA_HOME/bin:$PATH"; fi; '
+
+  if [ "$working_dir" = "backend" ]; then
+    requirement_check='if ! command -v java >/dev/null 2>&1 || ! command -v javac >/dev/null 2>&1; then echo "Java JDK 17+ was not found. Install/select it with SDKMAN or set JAVA_HOME."; exit 1; fi; '
+  else
+    requirement_check='if ! command -v npm >/dev/null 2>&1; then echo "npm was not found. Install Node.js or configure NVM in ~/.bashrc."; exit 1; fi; '
+  fi
+
+  local terminal_command="${environment_setup}${requirement_check}cd \"$ROOT_DIR/$working_dir\" && $command; status=\$?; echo; echo \"Process stopped with exit code \$status. Press Enter to close.\"; read -r"
 
   if command -v gnome-terminal >/dev/null 2>&1; then
     gnome-terminal --title="$title" -- bash -lc "$terminal_command"
