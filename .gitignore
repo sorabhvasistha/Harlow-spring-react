@@ -1,0 +1,33 @@
+# Local databases and runtime files
+*.db
+*.db-shm
+*.db-wal
+*.log
+
+# Java / Maven
+backend/target/
+backend/.mvn/wrapper/maven-wrapper.jar
+
+# JavaScript / Vite
+frontend/node_modules/
+frontend/dist/
+frontend/.vite/
+frontend/*.local
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# IDE settings
+.vscode/
+.idea/
+*.iml
+*.iws
+*.ipr
+
+# Operating system files
+.DS_Store
+Thumbs.db
+
+# Archives and generated exports
+backend.zip
